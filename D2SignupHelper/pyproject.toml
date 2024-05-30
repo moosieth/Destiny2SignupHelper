@@ -3,11 +3,11 @@ name = "d2signuphelper"
 version = "0.1.0"
 description = ""
 authors = ["Mitchell Frazer <108438939+moosieth@users.noreply.github.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 discord = "^2.3.2"
+pymongo = "^4.7.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -16,6 +16,9 @@ black = "^24.4.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.1"
+
+[tool.poetry.scripts]
+bot-start = "d2signuphelper.bot:bot_init"
 
 [build-system]
 requires = ["poetry-core"]
