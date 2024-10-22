@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import os
 import logging
+import dotenv
 
 from d2signuphelper.mongo_interaction.mongo_config import gen_mongo_client
 from d2signuphelper.views.listing_view import (
@@ -22,9 +23,11 @@ from d2signuphelper.mongo_interaction.listings import (
 
 logger = logging.getLogger(__name__)
 
-TOKEN=os.environ.get('TOKEN')
-GUILD_ID = os.environ.get('GUILD_ID')
-OWNER_ID = os.environ.get('OWNER_ID')
+environ = dotenv.dotenv_values(".env")
+
+TOKEN = environ["TOKEN"]
+GUILD_ID = int(environ["GUILD_ID"])
+OWNER_ID = int(environ["OWNER_ID"])
 
 
 def bot_init():
@@ -106,12 +109,15 @@ def bot_init():
         )
 
         embed = discord.Embed(title=f"Raid: {activity}")
-        embed.set_image(url="https://www.destinypedia.com/File:Raid.jpg")
+        embed.set_thumbnail(
+            url="https://d1lss44hh2trtw.cloudfront.net/assets/article/2023/02/21/destiny-2-lightfall-raid-release-time_feature.jpg"
+        )
         embed.add_field(
             name="Leader", value=f"{interaction.user.mention}", inline=False
         )
         embed.add_field(name="Time", value=f"TODO", inline=False)
         embed.add_field(name="Description", value=f"TODO", inline=False)
+        embed.add_field(name="Time", value=f"TODO", inline=False)
         embed.add_field(name="Participants", value=f"", inline=False)
         embed.add_field(name="Backups", value=f"", inline=False)
 
@@ -119,11 +125,13 @@ def bot_init():
         view = discord.ui.View(timeout=None)
         view.add_item(
             RSVPButton(
-                user_id=interaction.user.id, listing_mongo_id=str(mongo_id), max=needed
+                listing_mongo_id=str(mongo_id),
+                max=needed,
+                creator=interaction.user.id,
             )
         )
         view.add_item(
-            BackupButton(user_id=interaction.user.id, listing_mongo_id=str(mongo_id))
+            BackupButton(listing_mongo_id=str(mongo_id), creator=interaction.user.id)
         )
 
         # Send message for posting
@@ -152,11 +160,37 @@ def bot_init():
         ]
     )
     async def lfg_dungeon(interaction: discord.Interaction, activity: str, needed: int):
-        # view = discord.ui.View(timeout=None)
-        # view.add_item(RSVPButton(user_id=interaction.user.id, max=needed))
-        # view.add_item(BackupButton(user_id=interaction.user.id))
+
+        embed = discord.Embed(title=f"Raid: {activity}")
+        embed.set_thumbnail(
+            url="https://i0.wp.com/kyberscorner.com/wp-content/uploads/2023/02/Destiny-2-Lightfall-Dungeons.jpg?fit=1920%2C1080&ssl=1"
+        )
+        embed.add_field(
+            name="Leader", value=f"{interaction.user.mention}", inline=False
+        )
+        embed.add_field(name="Time", value=f"TODO", inline=False)
+        embed.add_field(name="Description", value=f"TODO", inline=False)
+        embed.add_field(name="Time", value=f"TODO", inline=False)
+        embed.add_field(name="Participants", value=f"", inline=False)
+        embed.add_field(name="Backups", value=f"", inline=False)
+
+        # Make view, add RSVP buttons
+        view = discord.ui.View(timeout=None)
+        view.add_item(
+            RSVPButton(
+                listing_mongo_id=str(mongo_id),
+                max=needed,
+                creator=interaction.user.id,
+            )
+        )
+        view.add_item(
+            BackupButton(listing_mongo_id=str(mongo_id), creator=interaction.user.id)
+        )
+
+        # Send message for posting
         await interaction.response.send_message(
-            f"A listing would get made here by {interaction.user.mention}: ", view=view
+            embed=embed,
+            view=view,
         )
 
     bot.run(TOKEN)
