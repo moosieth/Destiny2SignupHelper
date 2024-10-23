@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 environ = dotenv.dotenv_values(".env")
 
 TOKEN = environ["TOKEN"]
-GUILD_ID = int(environ["GUILD_ID"])
 OWNER_ID = int(environ["OWNER_ID"])
 
 
@@ -73,7 +72,6 @@ def bot_init():
             return
 
         try:
-            g = discord.Object(id=GUILD_ID)
             synced = await bot.tree.sync()
             logger.info(f"Tree synced, {len(synced)} commands available.")
             await ctx.send(f"Tree Synced, {len(synced)} commands registered.")
