@@ -77,15 +77,19 @@ class BackupButton(Button):
             )
             return
 
+        embed = interaction.message.embeds[0]
+        if interaction.user.mention in embed.fields[4].value:
+            await interaction.response.send_message(
+                "You are already a backup for that listing!",
+                ephemeral=True,
+            )
+            return
+
         insert_result = rsvp_as_backup(
             listing_id=self.mongo_id, user_id=interaction.user.id
         )
 
-        if insert_result.modified_count == 1:
-            self.cur += 1
-
         # Update embed
-        embed = interaction.message.embeds[0]
         backups = embed.fields[4].value + f"""{interaction.user.mention}
         {chr(173)}"""
         embed.set_field_at(4, name="Backups", value=backups, inline=False)
