@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "d2signuphelper"
+name = "suraya"
 version = "0.1.0"
 description = ""
 authors = ["Mitchell Frazer <108438939+moosieth@users.noreply.github.com>"]
@@ -19,7 +19,7 @@ black = "^24.4.2"
 pytest = "^8.2.1"
 
 [tool.poetry.scripts]
-bot-start = "d2signuphelper.bot:bot_init"
+bot-start = "suraya.bot:bot_init"
 
 [build-system]
 requires = ["poetry-core"]

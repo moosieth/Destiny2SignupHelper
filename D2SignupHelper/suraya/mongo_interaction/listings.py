@@ -3,7 +3,7 @@ import datetime
 
 from bson import ObjectId
 
-from d2signuphelper.mongo_interaction.mongo_config import gen_mongo_client
+from suraya.mongo_interaction.mongo_config import gen_mongo_client
 
 
 def make_listing(poster_id: int, guild_id: int, activity: str, num_needed: int):

@@ -5,8 +5,8 @@ from discord.ui import Button, View
 
 import re
 
-from d2signuphelper.assets.activities import ActivityType
-from d2signuphelper.mongo_interaction.listings import (
+from suraya.assets.activities import ActivityType
+from suraya.mongo_interaction.listings import (
     make_listing,
     rsvp_to_listing,
     rsvp_as_backup,

@@ -5,17 +5,17 @@ import os
 import logging
 import dotenv
 
-from d2signuphelper.mongo_interaction.mongo_config import gen_mongo_client
-from d2signuphelper.views.listing_view import (
+from suraya.mongo_interaction.mongo_config import gen_mongo_client
+from suraya.views.listing_view import (
     RSVPButton,
     BackupButton,
 )
-from d2signuphelper.assets.activities import Raids, Dungeons, Rituals
-from d2signuphelper.mongo_interaction.guilds import (
+from suraya.assets.activities import Raids, Dungeons, Rituals
+from suraya.mongo_interaction.guilds import (
     make_guild_entry,
     update_guild_default,
 )
-from d2signuphelper.mongo_interaction.listings import (
+from suraya.mongo_interaction.listings import (
     make_listing,
     rsvp_to_listing,
     rsvp_as_backup,
