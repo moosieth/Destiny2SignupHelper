@@ -33,6 +33,14 @@ class RSVPButton(Button):
             )
             return
 
+        embed = interaction.message.embeds[0]
+        if interaction.user.mention in embed.fields[3].value:
+            await interaction.response.send_message(
+                "You are already a participant for that listing!",
+                ephemeral=True,
+            )
+            return
+
         insert_result = rsvp_to_listing(
             listing_id=self.mongo_id, user_id=interaction.user.id
         )
@@ -41,10 +49,9 @@ class RSVPButton(Button):
             self.cur += 1
 
         # Update embed
-        embed = interaction.message.embeds[0]
-        participants = embed.fields[4].value + f"""{interaction.user.mention}
+        participants = embed.fields[3].value + f"""{interaction.user.mention}
         {chr(173)}"""
-        embed.set_field_at(4, name="Participants", value=participants, inline=False)
+        embed.set_field_at(3, name="Participants", value=participants, inline=False)
 
         if self.cur >= self.max:
             self.view.remove_item(self)
@@ -79,8 +86,8 @@ class BackupButton(Button):
 
         # Update embed
         embed = interaction.message.embeds[0]
-        backups = embed.fields[5].value + f"""{interaction.user.mention}
+        backups = embed.fields[4].value + f"""{interaction.user.mention}
         {chr(173)}"""
-        embed.set_field_at(5, name="Backups", value=backups, inline=False)
+        embed.set_field_at(4, name="Backups", value=backups, inline=False)
 
         await interaction.response.edit_message(embed=embed, view=self.view)
