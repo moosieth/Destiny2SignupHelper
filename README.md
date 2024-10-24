@@ -38,6 +38,12 @@ Currently, Suraya has the following available commands:
   - `time`: The time you want to start the activity. This should be of the
     format `HH:MM{a|p}`.
 - `/lfg-dungeon`: Creates an LFG posting for a Dungeon activity
+  - `activity`: The name of the Dungeon you're making the posting for
+  - `needed`: The number of players you need
+  - `description`: A description of your posting. This should contain any info
+    you want potential applicants to know.
+  - `time`: The time you want to start the activity. This should be of the
+    format `HH:MM{a|p}`.
 - `/help`: Display a help message detailing these commands and their arguments
 
 ## Future Enhancements
