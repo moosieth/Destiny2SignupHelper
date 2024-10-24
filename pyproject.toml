@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "suraya"
+version = "0.1.0"
+description = ""
+authors = ["Mitchell Frazer <108438939+moosieth@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymongo = "^4.7.2"
+discord-py = "^2.3.2"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.1"
+
+[tool.poetry.scripts]
+bot-start = "suraya.bot:bot_init"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
