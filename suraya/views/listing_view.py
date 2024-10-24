@@ -49,8 +49,11 @@ class RSVPButton(Button):
             self.cur += 1
 
         # Update embed
-        participants = embed.fields[3].value + f"""{interaction.user.mention}
+        participants = (
+            embed.fields[3].value
+            + f"""{interaction.user.mention}
         {chr(173)}"""
+        )
         embed.set_field_at(3, name="Participants", value=participants, inline=False)
 
         if self.cur >= self.max:
@@ -90,8 +93,11 @@ class BackupButton(Button):
         )
 
         # Update embed
-        backups = embed.fields[4].value + f"""{interaction.user.mention}
+        backups = (
+            embed.fields[4].value
+            + f"""{interaction.user.mention}
         {chr(173)}"""
+        )
         embed.set_field_at(4, name="Backups", value=backups, inline=False)
 
         await interaction.response.edit_message(embed=embed, view=self.view)
