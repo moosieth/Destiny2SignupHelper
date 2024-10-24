@@ -26,6 +26,8 @@ environ = dotenv.dotenv_values(".env")
 TOKEN = environ["TOKEN"]
 OWNER_ID = int(environ["OWNER_ID"])
 
+VERSION = "0.1.0"
+
 
 def bot_init():
     intents = discord.Intents.all()
@@ -45,7 +47,7 @@ def bot_init():
         if guild.system_channel:
             embed = discord.Embed(title="Welcome to Suraya!")
             embed.add_field(
-                name="About this bot",
+                name="About Suraya",
                 value="Suraya is an open-source Discord bot that creates and manages LFG postings for Destiny 2.",
                 inline=False,
             )
@@ -59,6 +61,7 @@ def bot_init():
                 value=f"To display the details of all of Suraya's commands, use the `/help` command. To jump right in, try `/lfg-raid` or `/lfg-dungeon`!",
                 inline=False,
             )
+            embed.set_footer(text=f"Suraya Version {VERSION}")
 
             await guild.system_channel.send(embed=embed)
         else:
@@ -80,12 +83,28 @@ def bot_init():
             await ctx.send(f"Tree NOT Synced: {e}.")
 
     @bot.tree.command(name="ping", description="Ping the bot.")
-    async def list(interaction: discord.Interaction):
+    async def ping(interaction: discord.Interaction):
         await interaction.response.send_message("Pong!")
 
-    @bot.tree.command(name="help", description="Display a help message that outlines all of Suraya's commands")
-    async def list(interaction: discord.Interaction):
-        await interaction.response.send_message("TODO")
+    @bot.tree.command(
+        name="help",
+        description="Display a help message that outlines all of Suraya's commands",
+    )
+    async def help(interaction: discord.Interaction):
+        embed = discord.Embed(title=f"Suraya Help")
+        embed.add_field(
+            name="About Suraya",
+            value="Suraya is an open-source Discord bot that creates and manages LFG postings for Destiny 2.",
+            inline=False,
+        )
+        embed.add_field(
+            name="Commands",
+            value=f"A list of Suraya's commands can be found [here](https://github.com/moosieth/Suraya)",
+            inline=False,
+        )
+        embed.set_footer(text=f"Suraya Version {VERSION}")
+
+        await interaction.response.send_message(embed=embed)
 
     """Create a listing for a Raid activity
     """
@@ -105,9 +124,19 @@ def bot_init():
             for option in range(1, 6)
         ]
     )
-    @app_commands.describe(description="Any info you think potential participants should know")
-    @app_commands.describe(time="Time you want to start the activity. Of the form: `HH:MM{a|p}`")
-    async def lfg_raid(interaction: discord.Interaction, activity: str, needed: int, description: str, time: str):
+    @app_commands.describe(
+        description="Any info you think potential participants should know"
+    )
+    @app_commands.describe(
+        time="Time you want to start the activity. Of the form: `HH:MM{a|p}`"
+    )
+    async def lfg_raid(
+        interaction: discord.Interaction,
+        activity: str,
+        needed: int,
+        description: str,
+        time: str,
+    ):
         # Create a posting within MongoDB
         mongo_id = make_listing(
             poster_id=interaction.user.id,
@@ -127,6 +156,7 @@ def bot_init():
         embed.add_field(name="Time", value=time, inline=False)
         embed.add_field(name="Participants", value=f"", inline=False)
         embed.add_field(name="Backups", value=f"", inline=False)
+        embed.set_footer(text=f"Suraya Version {VERSION}")
 
         # Make view, add RSVP buttons
         view = discord.ui.View(timeout=None)
@@ -167,9 +197,19 @@ def bot_init():
             for option in range(1, 3)
         ]
     )
-    @app_commands.describe(description="Any info you think potential participants should know")
-    @app_commands.describe(time="Time you want to start the activity. Of the form: `HH:MM{a|p}`")
-    async def lfg_dungeon(interaction: discord.Interaction, activity: str, needed: int, description: str, time: str):
+    @app_commands.describe(
+        description="Any info you think potential participants should know"
+    )
+    @app_commands.describe(
+        time="Time you want to start the activity. Of the form: `HH:MM{a|p}`"
+    )
+    async def lfg_dungeon(
+        interaction: discord.Interaction,
+        activity: str,
+        needed: int,
+        description: str,
+        time: str,
+    ):
         # Create a posting within MongoDB
         mongo_id = make_listing(
             poster_id=interaction.user.id,
@@ -177,7 +217,7 @@ def bot_init():
             activity="Raid - " + activity,
             num_needed=needed,
         )
-        
+
         embed = discord.Embed(title=f"Raid: {activity}")
         embed.set_thumbnail(
             url="https://i0.wp.com/kyberscorner.com/wp-content/uploads/2023/02/Destiny-2-Lightfall-Dungeons.jpg?fit=1920%2C1080&ssl=1"
@@ -189,6 +229,7 @@ def bot_init():
         embed.add_field(name="Description", value=description, inline=False)
         embed.add_field(name="Participants", value=f"", inline=False)
         embed.add_field(name="Backups", value=f"", inline=False)
+        embed.set_footer(text=f"Suraya Version {VERSION}")
 
         # Make view, add RSVP buttons
         view = discord.ui.View(timeout=None)
